@@ -1,85 +1,83 @@
-task_list_arr = []
-menu_option_prompt = """
-Menu:
-    1 or add to add a new item.
-    2 or edit to modify an item.
-    3 or complete
-    4 or x to exit.
-"""
+from helpers import add, edit, show_list_size, mark_complete, exit, show_list_items as show
 
 
 def main():
+    """
+    summary: 
+    Daily task list app. Keep a tab on your day via the command line.
+
+    Raises:
+        ValueError: 
+        If user enters something that's not an option on the menu, 
+        we raise a ValueError and offer the user the option to try again or end the program.
+    Returns None.
+    """
+    task_list_arr = []
+    completed_task = []
+    menu_option_prompt = """
+Select an option from this menu:
+'1' or 'add'        - To add a new item.
+'2' or 'edit'       - To modify an item.
+'3' or 'complete'   - To mark a task as completed.
+'4' or 'show'       - To show the list of items.
+'5' or 'x'          - To exit.\n"""
+
     flag = True
-    show_list_size()
+    show_list_size(task_list_arr)
 
     while flag:
         try:
-            user_input = input(menu_option_prompt +
-                               "\nPlease enter your selection: ")
+            user_input = input(
+                "".join([menu_option_prompt, "\nPlease enter your selection: "]))
             if not user_input:
-                show_list_size()
-                local_message = "User did not enter any value. No changes made. Ending Program!"
+                show_list_size(task_list_arr)
+                local_message = "You did not enter a value.\nNo changes made, ending Program!"
                 raise ValueError(local_message)
-            if user_input == '4' or user_input == 'x' or user_input == 'exit':
-                local_message = "Ending Program at User's request!"
-                break
 
-            if user_input == 'add' or user_input == '1':
-                flag = add(task_list_arr)
-            elif user_input == 'edit' or user_input == '2':
-                flag = edit(task_list_arr)
-            elif user_input == 'edit' or user_input == '3':
-                flag = mark_complete(task_list_arr)
+            match user_input:
+                case 'x':
+                    flag = exit()
+                case '5':
+                    flag = exit()
+                case'exit':
+                    flag = exit()
+                case '1':
+                    flag = add(task_list_arr)
+                case 'add':
+                    flag = add(task_list_arr)
+                case '2':
+                    flag = edit(task_list_arr)
+                case 'edit':
+                    flag = edit(task_list_arr)
+                case '3':
+                    flag = mark_complete(task_list_arr)
+                case 'complete':
+                    flag = mark_complete(task_list_arr)
+                case '4':
+                    flag = show(task_list_arr)
+                case 'show':
+                    flag = show(task_list_arr)
+                case _:
+                    # ~ default case:
+                    print('case _')
+                    flag = False
+                    raise
+
             if flag:
-                print("message: Success!")
-                print(f"Task List Size: {len(task_list_arr)}")
+                print("Message: Success!")
+                show_list_size(task_list_arr)
                 continue
+            else:
+                raise ValueError("Invalid value.")
         except Exception as err:
-            print(err)
+            print("Message:",err)
             flag = True if input(
                 'Would you like to try again? Enter Yes or No: ').lower() == 'yes' else False
+
             if not flag:
-                print(
-                    "message: No item was added to the list! User didn't enter. Ending Program!")
+                print("Ending Program...")
                 break
             else:
                 continue
-
-
-def add(storage_array):
-    """ add:
-            prompts user for a new item, adds it to the list
-            returns true once completed.
-    """
-    user_prompt = input(
-        "Enter item to be added to list. Ex: 'Buy a carton of eggs!'")
-
-    if not user_prompt:
-        raise ValueError(
-            "Message: Error Adding new item. User did not enter any value. No changes made.")
-
-    storage_array.append(user_prompt)
-    return True
-
-def edit(storage_array):
-    """ edit:
-        a function to edit an item from the list.
-        if the list is empty, it warns the user that editing can only be done on a list that has items.
-        else it prints the items, and allow user to select which item should be edited.
-    """
-#     if not len(storage_array):
-#         print("Your current list is empty. You can't edit an empty list. \nPlease add items, and try again.")
-    return None
-
-def exit(new_item, arr):
-    return None
-
-def mark_complete(storage_array):
-    return None
-
-
-def show_list_size():
-    print(f"DailyTask Size: {len(task_list_arr)}")
-
-
+    show(task_list_arr)
 main()
