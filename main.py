@@ -1,4 +1,4 @@
-from helpers import add, edit, show_list_size, mark_complete, exit, show_list_items as show
+from helpers import add, edit, show_list_size, mark_complete, exit, show_list_items as show, show_completed_items as show_comp
 
 
 def main():
@@ -16,11 +16,12 @@ def main():
     completed_task = []
     menu_option_prompt = """
 Select an option from this menu:
-'1' or 'add'        - To add a new item.
-'2' or 'edit'       - To modify an item.
-'3' or 'complete'   - To mark a task as completed.
-'4' or 'show'       - To show the list of items.
-'5' or 'x'          - To exit.\n"""
+    '1' or 'add'            - To add a new item.
+    '2' or 'edit'           - To modify an item.
+    '3' or 'complete'       - To mark a task as completed.
+    '4' or 'show -open'           - To show the list of open tasks.
+    '5' or 'show -completed'- To show the list of completed tasks.
+    '6' or 'x' or 'exit'    - To exit.\n"""
 
     flag = True
     show_list_size(task_list_arr)
@@ -50,34 +51,37 @@ Select an option from this menu:
                 case 'edit':
                     flag = edit(task_list_arr)
                 case '3':
-                    flag = mark_complete(task_list_arr)
+                    flag = mark_complete(task_list_arr, completed_task)
                 case 'complete':
-                    flag = mark_complete(task_list_arr)
+                    flag = mark_complete(task_list_arr, completed_task)
                 case '4':
                     flag = show(task_list_arr)
-                case 'show':
+                case 'show -open':
                     flag = show(task_list_arr)
+                case '6':
+                    show_comp(completed_task)
+                case 'show -completed':
+                    show_comp(completed_task)
                 case _:
                     # ~ default case:
                     print('case _')
                     flag = False
                     raise
 
-            if flag:
-                print("Message: Success!")
-                show_list_size(task_list_arr)
-                continue
-            else:
+            if not flag:
                 raise ValueError("Invalid value.")
+            
+            print("Message: Success!")
+            show_list_size(task_list_arr)
+            continue
+
         except Exception as err:
             print("Message:",err)
             flag = True if input(
                 'Would you like to try again? Enter Yes or No: ').lower() == 'yes' else False
-
             if not flag:
                 print("Ending Program...")
                 break
-            else:
-                continue
+            continue
     show(task_list_arr)
 main()
