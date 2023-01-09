@@ -8,13 +8,12 @@ def show_list_items(items):
         bool: _description_
     """
     if not len(items):
-        raise Exception("Yay! You have completed all the tasks. There are no task left on your Today's List.")
         return False
+    
     print(f"List Size: {len(items)}")
     print("List Items: ")
-    for index, value in enumerate(items): 
-            print(f'{index + 1} - {value}')
-    print("")
+    for index, value in enumerate(items):
+        print(f'{index + 1} - {value}')
     return True
 
 
@@ -27,7 +26,8 @@ def show_completed_items(items):
         bool: _description_
     """
     if not len(items):
-        return
+        print("You haven't completed any tasks recently.")
+        return False
     print( f"Completed Tasks List: \nSize: {len(items)}\nItems:\n")
     for index, value in enumerate(items):
             print(f'{index + 1} - {value}')
@@ -51,13 +51,13 @@ def mark_complete(tasks_store, completed_store):
     
     try:
         show_list_items(tasks_store)
-        user_input = input( 'Select an item from the list above. Use integer only: 1, 2, 3...: ')
+        user_input = input( 'Select an item from the list above. Use integer only: 1, 2, 3...: ').strip()
         index = int(user_input) if user_input.isnumeric() and int(user_input) < len(tasks_store) else -1
-        if index-1 > -1:
-            completed_store.append(tasks_store[index-1])
-            return True            
-        else:
+        index = index - 1
+        if index < 0 or index > len(tasks_store)-1:
             raise ValueError("Invalid Index!")
+        completed_store.append( tasks_store.pop(index-1) )
+        return True
     except Exception as err:
         print(f'Error: {err}')
         return False
@@ -78,41 +78,45 @@ def edit(tasks_store):
     try:
         message = """Which item would you like to edit or replace?
         Please enter an integer only. Ex: 1 for the first item: """
-        user_input = input(message)
+        user_input = input(message).strip()
+        
         if not user_input.isnumeric():
             message = "User input was an invalid data type. Please enter integer only."
             raise TypeError(message)
-        index = int( float( user_input.strip() ) )
-        if index < 0 or index > len(tasks_store):
-            message = "Invalid Index! Either less than 0 or more than number of available items."
+        
+        index = int(user_input) - 1
+        if index < 0 or index > len(tasks_store) - 1:
+            message = "Invalid Index! Either less than 0 or more than number of open tasks."
             raise ValueError(message)
-        print(tasks_store[index - 1])
+        
+        print(tasks_store[index])
         user_input = input("Enter new value: ")
         if not user_input:
             raise ValueError("User didn't enter anything. Item cannot be blank.")
-        tasks_store[index - 1] = user_input
+        tasks_store[index] = user_input
         print("Success!")
         return True
     except Exception as err:
         print(err)
         return False
 
-def exit():
-    """exit function: ends the applications on user's request.
 
-    Returns: bool: False(always, False terminates the program in main)
+def exit():
+    """ Ends the applications on user's request. Takes no arguments. Always returns False. 
+    False should be used to terminate the program inside of main.
     """
     print('exiting...')
     print("Ending Program at User's request!")
     return False
 
+
 def add(storage_array):
-    """ add:
-            prompts user for a new item, adds it to the list
+    """ Prompts user for a new item.
+    adds it to the list
             returns true once completed.
     """
     message = "Enter item to be added to list.\nEx: 'Buy a carton of eggs!': "
-    user_prompt = input(message)
+    user_prompt = input(message).strip()
 
     if not user_prompt:
         message = "Message: Error Adding new item. User did not enter any value. No changes made."
@@ -120,3 +124,35 @@ def add(storage_array):
 
     storage_array.append(user_prompt)
     return True
+
+
+# def open_tasks_to_json(open_tasks):
+#     try:
+#         import json
+#         data = {
+#             'open-tasks': open_tasks,
+#         }
+#         with open('storage/open_tasks.json', 'w') as opentasks:
+#             json.dump(data[open_tasks], opentasks)
+#         return True
+
+#     except Exception as err:
+#         print("Failed to save files as json:")
+#         print(f"Error: {err}")
+#         return False
+
+
+# def completed_tasks_to_json(completed_tasks):
+#     try:
+#         import json
+#         data = {
+#             'completed-tasks': completed_tasks,
+#         }
+#         with open('storage/completed_tasks.json', 'w') as completedtasks:
+#             json.dump(data[completed_tasks], completedtasks)
+#         return True
+
+#     except Exception as err:
+#         print("Failed to save files as json:")
+#         print(f"Error: {err}")
+#         return False

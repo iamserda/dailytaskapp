@@ -21,7 +21,7 @@ Select an option from this menu:
     '3' or 'complete'       - To mark a task as completed.
     '4' or 'show -open'           - To show the list of open tasks.
     '5' or 'show -completed'- To show the list of completed tasks.
-    '6' or 'x' or 'exit'    - To exit.\n"""
+    '9' or 'x' or 'exit'    - To exit.\n"""
 
     flag = True
     show_list_size(task_list_arr)
@@ -38,7 +38,7 @@ Select an option from this menu:
             match user_input:
                 case 'x':
                     flag = exit()
-                case '5':
+                case '0':
                     flag = exit()
                 case'exit':
                     flag = exit()
@@ -58,7 +58,7 @@ Select an option from this menu:
                     flag = show(task_list_arr)
                 case 'show -open':
                     flag = show(task_list_arr)
-                case '6':
+                case '5':
                     show_comp(completed_task)
                 case 'show -completed':
                     show_comp(completed_task)
