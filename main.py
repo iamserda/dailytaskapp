@@ -1,4 +1,4 @@
-from helpers import add, edit, show_list_size, mark_complete, exit, show_list_items as show, show_completed_items as show_comp
+from helpers import add, edit, mark_complete, exit as x, show_completed_tasks as showc, show_open_tasks as showo
 
 
 def main():
@@ -12,8 +12,6 @@ def main():
         we raise a ValueError and offer the user the option to try again or end the program.
     Returns None.
     """
-    task_list_arr = []
-    completed_task = []
     menu_option_prompt = """
 Select an option from this menu:
     '1' or 'add'            - To add a new item.
@@ -24,64 +22,55 @@ Select an option from this menu:
     '9' or 'x' or 'exit'    - To exit.\n"""
 
     flag = True
-    show_list_size(task_list_arr)
-
+    
     while flag:
         try:
             user_input = input(
                 "".join([menu_option_prompt, "\nPlease enter your selection: "]))
             if not user_input:
-                show_list_size(task_list_arr)
                 local_message = "You did not enter a value.\nNo changes made, ending Program!"
                 raise ValueError(local_message)
 
             match user_input:
                 case 'x':
-                    flag = exit()
+                    flag = x()
                 case '0':
-                    flag = exit()
+                    flag = x()
                 case'exit':
-                    flag = exit()
+                    flag = x()
                 case '1':
-                    flag = add(task_list_arr)
+                    flag = add()
                 case 'add':
-                    flag = add(task_list_arr)
+                    flag = add()
                 case '2':
-                    flag = edit(task_list_arr)
+                    flag = edit()
                 case 'edit':
-                    flag = edit(task_list_arr)
+                    flag = edit()
                 case '3':
-                    flag = mark_complete(task_list_arr, completed_task)
+                    flag = mark_complete()
                 case 'complete':
-                    flag = mark_complete(task_list_arr, completed_task)
+                    flag = mark_complete()
                 case '4':
-                    flag = show(task_list_arr)
+                    flag = showo()
                 case 'show -open':
-                    flag = show(task_list_arr)
+                    flag = showo()
                 case '5':
-                    show_comp(completed_task)
+                    showc()
                 case 'show -completed':
-                    show_comp(completed_task)
+                    showc()
                 case _:
                     # ~ default case:
-                    print('case _')
-                    flag = False
-                    raise
-
+                    raise ValueError("'_' is not a valid value.")
             if not flag:
-                raise ValueError("Invalid value.")
-            
+                raise TypeError("User input error! see previous message.")
             print("Message: Success!")
-            show_list_size(task_list_arr)
             continue
 
         except Exception as err:
-            print("Message:",err)
-            flag = True if input(
-                'Would you like to try again? Enter Yes or No: ').lower() == 'yes' else False
+            print("Error:", err)
+            flag = True if input('Would you like to try again? Enter Yes or No: ').lower() == 'yes' else False
             if not flag:
                 print("Ending Program...")
                 break
             continue
-    show(task_list_arr)
 main()
