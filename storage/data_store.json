@@ -1,10 +1,23 @@
 {
     "open-tasks": [
-        "Complete Day 8 - 20",
-        "Have the new desk moved to my home office 65th street on the Upper-East.",
-        "live and learn",
-        "Be focused on the day's task. Do the small things right. Do the right things well. The rest will sort itself out."
+        "Boston Celtics",
+        "Chicago Bulls",
+        "Miami Heat",
+        "Brooklyn Nets",
+        "Orlando Magic",
+        "Indiana Pacers",
+        "Washington Wizards",
+        "Toronto Raptors",
+        "Brooklyn Nets",
+        "Atlanta Hawks",
+        "Charlotte Hornets",
+        "Philadelphia 76ers",
+        "Brooklyn Nets",
+        "Milwaukee Bucks",
+        "Detroit Pistons"
     ],
-    "completed-tasks": [],
+    "completed-tasks": [
+        "Miami"
+    ],
     "menu-items": []
 }
