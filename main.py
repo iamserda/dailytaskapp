@@ -25,7 +25,7 @@ def main():
         we raise a ValueError and offer the user the option to try again or end the program.
     Returns None.
     """
-    menu = """Select an option from this menu:
+    menu = """\nSelect an option from this menu:
     To add a new item: 'add' or '1'
     To modify an item: 'edit' or '2'
     To complete a task: 'comp' or '3' 
@@ -55,7 +55,11 @@ def main():
                         break
                     case '1':
                         new_item = user_input[2:].strip()
-                        flag = add(new_item)
+                        if new_item:
+                            flag = add(new_item)
+                        else:
+                            print("Try Again! ex: '1 Pickup Junior from soccer practice.'")
+                            flag = True
                     case '2': flag = basic_editing()
                     case '3': flag = mark_complete()
                     case '4': flag = showo()
@@ -96,6 +100,5 @@ def main():
                     "Failed to execute your command! Exiting now...")
     except Exception as err:
         print("Error:", err)
-
-
+        
 main()
